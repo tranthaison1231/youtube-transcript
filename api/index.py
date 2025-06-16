@@ -44,6 +44,7 @@ def get_latest_video_info(channel_url):
         return {
             "title": latest_video["title"],
             "url": latest_video["url"],
+            "video_id": latest_video["id"],
         }
 
 
