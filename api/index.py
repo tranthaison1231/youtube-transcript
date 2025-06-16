@@ -6,11 +6,11 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def get_transcript():
-    video_id = request.args.get("video_id")
-    language = request.args.get("language", "en")
+    # video_id = request.args.get("video_id")
+    # language = request.args.get("language", "en")
 
-    if not video_id:
-        return jsonify({"error": "Missing video_id"}), 400
+    # if not video_id:
+    #     return jsonify({"error": "Missing video_id"}), 400
 
     try:
         transcript = YouTubeTranscriptApi.get_transcript(
