@@ -1,5 +1,5 @@
-from flask import Flask, jsonify
-from youtube_transcript_api._api import YouTubeTranscriptApi
+from flask import Flask, jsonify, request
+import requests
 
 
 app = Flask(__name__)
@@ -7,15 +7,14 @@ app = Flask(__name__)
 
 @app.route("/youtube-transcript", methods=["GET"])
 def get_transcript():
-    # video_id = request.args.get("video_id")
-    # language = request.args.get("language", "en")
+    video_id = request.args.get("video_id")
 
-    # if not video_id:
-    #     return jsonify({"error": "Missing video_id"}), 400
+    if not video_id:
+        return jsonify({"error": "Missing video_id"}), 400
 
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(
-            "P4GLeHsGXpc", languages=["vi"]
+        transcript = requests.get(
+            f"https://videoentity.com/videos/{video_id}/transcript"
         )
         return jsonify(transcript), 200
     except Exception as e:
