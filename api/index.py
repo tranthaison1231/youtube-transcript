@@ -5,7 +5,7 @@ from youtube_transcript_api._api import YouTubeTranscriptApi
 app = Flask(__name__)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/youtube-transcript", methods=["GET"])
 def get_transcript():
     # video_id = request.args.get("video_id")
     # language = request.args.get("language", "en")
