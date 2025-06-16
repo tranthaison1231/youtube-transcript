@@ -13,12 +13,9 @@ def get_transcript():
         return jsonify({"error": "Missing video_id"}), 400
 
     try:
-        try:
-            transcript = YouTubeTranscriptApi.get_transcript(
-                video_id, languages=[language]
-            )
-        except Exception:
-            transcript = YouTubeTranscriptApi.get_transcript(video_id)
+        transcript = YouTubeTranscriptApi.get_transcript(
+            "P4GLeHsGXpc", languages=["vi"]
+        )
         return jsonify(transcript), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
