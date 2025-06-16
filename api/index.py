@@ -16,6 +16,15 @@ def get_transcript():
         transcript = requests.get(
             f"https://videoentity.com/videos/{video_id}/transcript"
         )
-        return jsonify(transcript), 200
+        if transcript.status_code == 200:
+            json_data = transcript.json()
+
+            scripts = ""
+            for item in json_data["transcript"]:
+                scripts += item["text"]
+
+            return jsonify({"scripts": scripts}, 200)
+        else:
+            return jsonify({"error": "Failed to get transcript"}), 500
     except Exception as e:
         return jsonify({"error": str(e)}), 500
