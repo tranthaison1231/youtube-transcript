@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 
-crypto_bp = Blueprint("crypto", __name__)
+crypto_bp = Blueprint("crypto", __name__, url_prefix="/crypto")
 
 
 @crypto_bp.route("/news", methods=["GET"])

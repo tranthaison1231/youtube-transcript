@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from api.services.transcript_service import fetch_and_process_transcript
 from api.services.youtube_service import get_latest_video_info
 
-youtube_bp = Blueprint("youtube", __name__)
+youtube_bp = Blueprint("youtube", __name__, url_prefix="/youtube")
 
 
 @youtube_bp.route("/transcript", methods=["GET"])
