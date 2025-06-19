@@ -1,13 +1,13 @@
 from flask import Blueprint, jsonify
-from api.services.crypto_news_service import get_coinmarketcap_news
+from api.services.coincu_news_service import get_coincu_news
+from api.services.coinmerketcap_news_service import get_coinmarketcap_news
 
 crypto_bp = Blueprint("crypto", __name__, url_prefix="/crypto")
 
 
 @crypto_bp.route("/news", methods=["GET"])
 def get_crypto_news():
-    # Get news from Cointelegraph
-    news = get_coinmarketcap_news()
+    news = get_coinmarketcap_news() + get_coincu_news()
 
     if news:
         return jsonify({"status": "success", "count": len(news), "news": news}), 200
