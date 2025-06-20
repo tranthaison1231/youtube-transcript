@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from api.services.bybygo_news_service import get_bybygo_news
-from api.services.tanstack_news_service import get_tanstack_news
+# from api.services.tanstack_news_service import get_tanstack_news
 
 tech_bp = Blueprint("tech", __name__, url_prefix="/tech")
 
@@ -10,10 +10,10 @@ tech_bp = Blueprint("tech", __name__, url_prefix="/tech")
 def get_tech_news_controller():
     with ThreadPoolExecutor(max_workers=2) as executor:
         bybygo_news = executor.submit(get_bybygo_news)
-        tanstack_news = executor.submit(get_tanstack_news)
+        # tanstack_news = executor.submit(get_tanstack_news)
 
         news = []
-        for future in as_completed([bybygo_news, tanstack_news]):
+        for future in as_completed([bybygo_news]):
             try:
                 result = future.result()
                 if result:
