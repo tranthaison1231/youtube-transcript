@@ -74,7 +74,6 @@ def get_bybygo_news():
                         "published_date": published_date,
                     }
                     articles.append(article)
-                    print(f"Added article: {title}")
 
             except Exception as e:
                 print(f"Error processing item: {e}")
