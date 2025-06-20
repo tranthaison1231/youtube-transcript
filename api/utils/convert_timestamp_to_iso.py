@@ -11,5 +11,4 @@ def convert_timestamp_to_iso(timestamp_str):
         # Convert to ISO format with microseconds
         return dt.isoformat()
     except ValueError:
-        # If parsing fails, return current time in ISO format
         return datetime.now().isoformat()
