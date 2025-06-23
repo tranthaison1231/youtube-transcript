@@ -60,13 +60,12 @@ def get_bybygo_news():
                         # Convert to ISO format
                         published_date = dt.isoformat()
                     except Exception as e:
-                        print(f"Error parsing date: {e}")
-                        published_date = datetime.now().isoformat()
+                        published_date = ""
                 else:
-                    published_date = datetime.now().isoformat()
+                    published_date = ""
 
                 # Only add article if we have at least title and link
-                if title and link:
+                if title and link and published_date:
                     article = {
                         "title": title,
                         "link": link,
@@ -79,7 +78,6 @@ def get_bybygo_news():
                 print(f"Error processing item: {e}")
                 continue
 
-        print(f"Successfully parsed {len(articles)} articles")
         return articles
 
     except requests.exceptions.RequestException as e:

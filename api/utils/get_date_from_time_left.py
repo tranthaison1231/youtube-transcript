@@ -29,5 +29,4 @@ def convert_to_iso(date_str):
             dt = datetime.strptime(date_str, "%B %d, %Y")
             return dt.isoformat()
         except Exception as e:
-            print(f"Error parsing date: {e}")
             return None

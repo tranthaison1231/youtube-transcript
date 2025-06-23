@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from api.services.bybygo_news_service import get_bybygo_news
 from api.services.newsletter_news_service import get_newsletter_news
+from api.services.real_python_news_service import get_real_python_news
 from api.services.remix_news_service import get_remix_news
 from api.services.tanstack_news_service import get_tanstack_news
 from api.services.tailwind_news_service import get_tailwind_news
@@ -17,10 +18,18 @@ def get_tech_news_controller():
         tanstack_news = executor.submit(get_tanstack_news)
         remix_news = executor.submit(get_remix_news)
         tailwind_news = executor.submit(get_tailwind_news)
+        real_python_news = executor.submit(get_real_python_news)
 
         news = []
         for future in as_completed(
-            [bybygo_news, newsletter_news, tanstack_news, remix_news, tailwind_news]
+            [
+                bybygo_news,
+                newsletter_news,
+                tanstack_news,
+                remix_news,
+                tailwind_news,
+                real_python_news,
+            ]
         ):
             try:
                 result = future.result()

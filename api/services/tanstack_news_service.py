@@ -44,18 +44,17 @@ def get_tanstack_news():
                 # Convert to ISO format
                 published_date = dt.isoformat()
             except Exception as e:
-                print(f"Error parsing date '{time}': {e}")
-                # Fallback to current time if parsing fails
-                published_date = datetime.now().isoformat()
+                published_date = ""
 
-            articles.append(
-                {
-                    "title": title,
-                    "link": "https://tanstack.com" + link_url,
-                    "summary": summary,
-                    "published_date": published_date,
-                }
-            )
+            if title and link_url and published_date:
+                articles.append(
+                    {
+                        "title": title,
+                        "link": "https://tanstack.com" + link_url,
+                        "summary": summary,
+                        "published_date": published_date,
+                    }
+                )
 
         return articles
 
