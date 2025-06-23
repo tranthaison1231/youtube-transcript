@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from api.services.bybygo_news_service import get_bybygo_news
 from api.services.newsletter_news_service import get_newsletter_news
+from api.services.remix_news_service import get_remix_news
 from api.services.tanstack_news_service import get_tanstack_news
 
 tech_bp = Blueprint("tech", __name__, url_prefix="/tech")
@@ -13,9 +14,12 @@ def get_tech_news_controller():
         bybygo_news = executor.submit(get_bybygo_news)
         newsletter_news = executor.submit(get_newsletter_news)
         tanstack_news = executor.submit(get_tanstack_news)
+        remix_news = executor.submit(get_remix_news)
 
         news = []
-        for future in as_completed([bybygo_news, newsletter_news, tanstack_news]):
+        for future in as_completed(
+            [bybygo_news, newsletter_news, tanstack_news, remix_news]
+        ):
             try:
                 result = future.result()
                 if result:
@@ -24,6 +28,10 @@ def get_tech_news_controller():
                 print(f"Error fetching news from one source: {e}")
 
     if news:
-        return jsonify({"status": "success", "count": len(news), "news": news}), 200
+        sorted_news = sorted(news, key=lambda x: x["published_date"], reverse=True)
+
+        return jsonify(
+            {"status": "success", "count": len(sorted_news), "news": sorted_news}
+        ), 200
     else:
         return jsonify({"status": "error", "message": "Failed to fetch news"}), 500

@@ -14,3 +14,20 @@ def get_date_from_time_left(time_left_text):
     else:
         # Return current time in ISO format if no match found
         return datetime.now().isoformat()
+
+
+def convert_to_iso(date_str):
+    """
+    Convert a date string like 'May 28, 2025' to ISO format '2025-05-28T00:00:00'
+    """
+    try:
+        dt = datetime.strptime(date_str, "%b %d, %Y")
+        return dt.isoformat()
+    except ValueError:
+        # Try full month name if abbreviated month fails
+        try:
+            dt = datetime.strptime(date_str, "%B %d, %Y")
+            return dt.isoformat()
+        except Exception as e:
+            print(f"Error parsing date: {e}")
+            return None

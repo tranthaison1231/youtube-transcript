@@ -50,7 +50,6 @@ def get_newsletter_news():
                         else summary_text
                     )
 
-                print(summary)
                 # Extract and parse publication date
                 pubdate_elem = item.find("pubDate")
                 published_date = ""
