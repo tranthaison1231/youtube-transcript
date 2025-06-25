@@ -6,6 +6,7 @@ from api.services.real_python_news_service import get_real_python_news
 from api.services.remix_news_service import get_remix_news
 from api.services.tanstack_news_service import get_tanstack_news
 from api.services.tailwind_news_service import get_tailwind_news
+from api.services.watcher_news_service import get_watcher_news
 
 tech_bp = Blueprint("tech", __name__, url_prefix="/tech")
 

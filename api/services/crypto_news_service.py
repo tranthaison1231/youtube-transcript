@@ -59,7 +59,7 @@ def get_crypto_news():
                         "title": title,
                         "link": link,
                         "summary": summary,
-                        "publishedDate": time_iso,
+                        "published_date": time_iso,
                     }
                     articles.append(article)
             except Exception as e:
