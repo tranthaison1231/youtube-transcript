@@ -39,12 +39,13 @@ def get_videos_info(channel_url, max_results=5):
             url = f"https://www.youtube.com/watch?v={video_id}"
             published_text = video.get("publishedTimeText", {}).get("simpleText", "")
 
-            print(published_text)
             video_list.append(
                 {
                     "title": title,
                     "url": url,
-                    "published_date": get_date_from_time_left(published_text),
+                    "published_date": get_date_from_time_left(
+                        time_left_text=published_text, timezone="Asia/Ho_Chi_Minh"
+                    ),
                 }
             )
 

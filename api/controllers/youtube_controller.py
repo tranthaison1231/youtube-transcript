@@ -1,6 +1,9 @@
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import List
 from flask import Blueprint, request, jsonify
 from api.services.transcript_service import fetch_and_process_transcript
 from api.services.youtube_service import get_latest_video_info
+from api.services.youtube_service import get_videos_info
 
 youtube_bp = Blueprint("youtube", __name__, url_prefix="/youtube")
 
@@ -27,3 +30,39 @@ def get_latest_video():
         return jsonify({"error": "Missing channel_url"}), 400
     last_video = get_latest_video_info(channel_url)
     return jsonify({"last_video": last_video}), 200
+
+
+@youtube_bp.route("/videos", methods=["POST"])
+def get_latest_videos():
+    data = request.get_json() or {}
+    channel_urls = data.get("channel_urls", [])
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        future_videos = [
+            executor.submit(get_videos_info, channel_url)
+            for channel_url in channel_urls
+        ]
+
+        videos = []
+        for future in as_completed(future_videos):
+            try:
+                result = future.result()
+                if result:
+                    videos.extend(result)
+            except Exception as e:
+                print(f"Error fetching news from one source: {e}")
+
+    if videos:
+        sorted_videos = sorted(videos, key=lambda x: x["published_date"], reverse=True)
+        filtered_videos = sorted_videos[:10]
+
+        return jsonify(
+            {
+                "status": "success",
+                "count": len(filtered_videos),
+                "total_count": len(videos),
+                "videos": filtered_videos,
+            }
+        ), 200
+    else:
+        return jsonify({"status": "error", "message": "Failed to fetch news"}), 500
