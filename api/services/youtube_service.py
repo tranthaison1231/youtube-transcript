@@ -1,4 +1,7 @@
 import yt_dlp
+import scrapetube
+
+from api.utils.get_date_from_time_left import get_date_from_time_left
 
 
 def get_latest_video_info(channel_url):
@@ -16,3 +19,33 @@ def get_latest_video_info(channel_url):
             "url": latest_video["url"],
             "video_id": latest_video["id"],
         }
+
+
+def get_videos_info(channel_url, max_results=5):
+    ydl_opts = {
+        "extract_flat": True,
+        "playlistend": 1,
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(channel_url, download=False)
+        if info is None or "entries" not in info:
+            return None
+        videos = scrapetube.get_channel(info["id"], limit=max_results)
+
+        video_list = []
+        for video in videos:
+            video_id = video["videoId"]
+            title = video["title"]["runs"][0]["text"]
+            url = f"https://www.youtube.com/watch?v={video_id}"
+            published_text = video.get("publishedTimeText", {}).get("simpleText", "")
+
+            print(published_text)
+            video_list.append(
+                {
+                    "title": title,
+                    "url": url,
+                    "published_date": get_date_from_time_left(published_text),
+                }
+            )
+
+        return video_list

@@ -1,19 +1,23 @@
-from datetime import datetime, timedelta
+from datetime import datetime
+import dateparser
 
 
 def get_date_from_time_left(time_left_text):
-    if "minutes" in time_left_text:
-        minutes = int(time_left_text.split(" ")[0])
-        return (datetime.now() - timedelta(minutes=minutes)).isoformat()
-    elif "hours" in time_left_text:
-        hours = int(time_left_text.split(" ")[0])
-        return (datetime.now() - timedelta(hours=hours)).isoformat()
-    elif "days" in time_left_text:
-        days = int(time_left_text.split(" ")[0])
-        return (datetime.now() - timedelta(days=days)).isoformat()
+    """
+    Converts a relative time string (e.g., '2 days ago') into an ISO 8601 formatted datetime string.
+    """
+    parsed_date = dateparser.parse(
+        time_left_text,
+        settings={
+            "TIMEZONE": "UTC",
+            "TO_TIMEZONE": "UTC",
+            "RETURN_AS_TIMEZONE_AWARE": True,
+        },
+    )
+    if parsed_date:
+        return parsed_date.isoformat()
     else:
-        # Return current time in ISO format if no match found
-        return datetime.now().isoformat()
+        return None  #
 
 
 def convert_to_iso(date_str, format="%b %d, %Y"):
