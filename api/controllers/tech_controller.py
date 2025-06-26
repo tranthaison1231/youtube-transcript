@@ -6,7 +6,7 @@ from api.services.real_python_news_service import get_real_python_news
 from api.services.remix_news_service import get_remix_news
 from api.services.tanstack_news_service import get_tanstack_news
 from api.services.tailwind_news_service import get_tailwind_news
-from api.services.watcher_news_service import get_watcher_news
+from api.services.aws_news_service import get_aws_news
 
 tech_bp = Blueprint("tech", __name__, url_prefix="/tech")
 
@@ -20,6 +20,7 @@ def get_tech_news_controller():
         remix_news = executor.submit(get_remix_news)
         tailwind_news = executor.submit(get_tailwind_news)
         real_python_news = executor.submit(get_real_python_news)
+        aws_news = executor.submit(get_aws_news)
 
         news = []
         for future in as_completed(
@@ -30,6 +31,7 @@ def get_tech_news_controller():
                 remix_news,
                 tailwind_news,
                 real_python_news,
+                aws_news,
             ]
         ):
             try:
