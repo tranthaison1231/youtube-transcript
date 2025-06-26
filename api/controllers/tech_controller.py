@@ -6,7 +6,9 @@ from api.services.real_python_news_service import get_real_python_news
 from api.services.remix_news_service import get_remix_news
 from api.services.tanstack_news_service import get_tanstack_news
 from api.services.tailwind_news_service import get_tailwind_news
-from api.services.aws_news_service import get_aws_news
+from api.services.techworld_news_service import get_techworld_news
+from api.services.sebastianraschka_news_service import get_sebastianraschka_news
+from api.services.implementing_news_service import get_implementing_news
 
 tech_bp = Blueprint("tech", __name__, url_prefix="/tech")
 
@@ -20,7 +22,9 @@ def get_tech_news_controller():
         remix_news = executor.submit(get_remix_news)
         tailwind_news = executor.submit(get_tailwind_news)
         real_python_news = executor.submit(get_real_python_news)
-        aws_news = executor.submit(get_aws_news)
+        techworld_news = executor.submit(get_techworld_news)
+        sebastianraschka_news = executor.submit(get_sebastianraschka_news)
+        implementing_news = executor.submit(get_implementing_news)
 
         news = []
         for future in as_completed(
@@ -31,7 +35,9 @@ def get_tech_news_controller():
                 remix_news,
                 tailwind_news,
                 real_python_news,
-                aws_news,
+                techworld_news,
+                sebastianraschka_news,
+                implementing_news,
             ]
         ):
             try:
@@ -49,6 +55,7 @@ def get_tech_news_controller():
             {
                 "status": "success",
                 "count": len(filtered_30_news),
+                "count_total": len(news),
                 "news": filtered_30_news,
             }
         ), 200

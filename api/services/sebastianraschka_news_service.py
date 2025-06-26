@@ -3,13 +3,13 @@ from bs4 import BeautifulSoup
 from email.utils import parsedate_to_datetime
 
 
-def get_newsletter_news():
+def get_sebastianraschka_news():
     """
     Scrape latest news from ByteByteGo RSS feed
     Returns a list of news articles with title, link, summary, and published_date
     """
     try:
-        url = "https://newsletter.systemdesign.one/feed"
+        url = "https://magazine.sebastianraschka.com/feed"
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
